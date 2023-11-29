@@ -91,7 +91,13 @@
 
               <tr>
                 <th scope="row">Location</th>
-                <td>Chennai</td>
+                <td>
+                  <select id="city">
+                    <option value="chennai">Chennai</option>
+                    <option value="tokyo">Tokyo</option>
+                    <option value="houston">Houston</option>
+                  </select>
+                </td>
               </tr>
 
               <tr>
@@ -186,7 +192,7 @@
         </div>
       </div>
       <div class="col d-flex justify-content-center">
-        <div class="result p-3" id="result" >
+        <div class="result p-3" id="result">
           <img src="assets/images/giphy.gif" alt="" id="loader" style="display: none;">
 
 
@@ -197,7 +203,8 @@
               <img id="graph" src='' class="img-fluid" style="width:100%">
             </div>
 
-            <button id="tooglebutton" class="btn btn-primary my-2" style="display: none" onclick="displayGraph()"> Toggle daily graph</button>
+            <button id="tooglebutton" class="btn btn-primary my-2" style="display: none" onclick="displayGraph()">
+              Toggle daily graph</button>
 
             <div class="col-6" style="display:none" id="daygraphdisplay">
               <img id="daygraph" src='' class="rounded mx-auto d-block" style="width: 100%;">
@@ -216,11 +223,11 @@
   <script>
     function displayGraph() {
       let daygraphdisplay = document.getElementById("daygraphdisplay")
-      let tooglebutton= document.getElementById('tooglebutton')
+      let tooglebutton = document.getElementById('tooglebutton')
 
       if (daygraphdisplay.style.display == "none") {
         daygraphdisplay.style.display = "block";
-        tooglebutton.style.display="none"
+        tooglebutton.style.display = "none"
       }
     }
   </script>
@@ -230,13 +237,14 @@
     const saverxDemoForm = document.getElementById('saverxDemoForm');
     saverxDemoForm.addEventListener('submit', async function (e) {
       e.preventDefault();
+      let city = document.getElementById("city");
+      let city_value = city.value;
+
       let result = document.getElementById('result')
       let loader = document.getElementById('loader')
       result.style.display = 'block'
       loader.style.display = 'block'
       window.scrollTo(0, 500);
-
-      const formData = new FormData(saverxDemoForm).entries()
 
       let cooling_water_temperature_setpoint = document.getElementsByName('cooling_water_temperature_setpoint');
       let chiller_setpoint_temperature = document.getElementsByName('chiller_setpoint_temperature');
@@ -264,9 +272,10 @@
       let data = {
         "cooling_water_temperature_setpoint": cooling_water_temperature_setpoint_value,
         "chiller_setpoint_temperature": chiller_setpoint_temperature_value,
-        "ahu_opening_percentage": ahu_opening_percentage_value
+        "ahu_opening_percentage": ahu_opening_percentage_value,
+        "city": city_value
       }
-
+      console.log(data);
       const daygraph = document.querySelector("#daygraph");
       const graph = document.querySelector("#graph")
 
@@ -291,14 +300,13 @@
         let button = document.getElementById('tooglebutton')
         button.style.display = 'block'
 
-        let showdata = `Predicted Energy Consumption without SaverX: ${Energy_Consumption_without_SaverX} kWh,<br> Predicted Energy Consumption with SaverX: ${Predicted_Energy_Consumption_with_SaverX} kWh, <br>Savings: ${Predicted_Savings}%`
+        let showdata = `Predicted Energy Consumption without SaverX: <span style="color:black"> ${Energy_Consumption_without_SaverX} kWh </span> <br> <p>Predicted Energy Consumption with SaverX: <span style="color:black"> ${Predicted_Energy_Consumption_with_SaverX} kWh </span> <br>Savings:<span style="color:black"> ${Predicted_Savings}%</span>`
         document.getElementById('optimalresult').innerHTML = showdata
 
 
       } catch (error) {
         console.log(error);
       }
-
 
     })
 
