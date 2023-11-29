@@ -55,6 +55,11 @@
       box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
       transform: translateY(0);
     }
+    .button-5:disabled {
+      background-color: #81898bd1;
+      box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+      transform: translateY(0);
+    }
   </style>
 </head>
 
@@ -187,7 +192,7 @@
                 </div>
               </div>
             </div>
-            <button class="button-5" role="button" class="btn-zodhya" id="simulate">Simulate Energy Consumption</button>
+            <button class="button-5 btn-zodhya" role="button" id="simulate" >Simulate Energy Consumption</button>
           </form>
         </div>
       </div>
@@ -237,6 +242,11 @@
     const saverxDemoForm = document.getElementById('saverxDemoForm');
     saverxDemoForm.addEventListener('submit', async function (e) {
       e.preventDefault();
+
+      let simulatebutton = document.getElementById("simulate");
+      simulatebutton.setAttribute("disabled", "");
+      console.log("Success");
+
       let city = document.getElementById("city");
       let city_value = city.value;
 
