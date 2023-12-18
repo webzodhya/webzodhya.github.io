@@ -101,14 +101,14 @@
                                             onMouseOut="this.style.color='#F68838'" href="contact.html">Contact Us</a>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="#" >
+                                        <a href="#">
                                             <i class="fa-solid fa-globe"></i> <span id="language">en</span>
                                         </a>
                                         <ul>
                                             <li> <a href="https://zodhyatech.com">English</a></li>
                                             <li><a href="https://de.zodhyatech.com">German</a></li>
-                                            <li><a href="https://jp.zodhyatech.com">Japanese</a></li> 
-                                            <li><a href="https://es.zodhyatech.com">Spanish</a></li> 
+                                            <li><a href="https://jp.zodhyatech.com">Japanese</a></li>
+                                            <li><a href="https://es.zodhyatech.com">Spanish</a></li>
 
                                         </ul>
                                     </li>
@@ -193,13 +193,17 @@
                             </div>
                             <div class="text wow slideInUp" data-wow-delay="300ms" data-wow-duration="1500ms">
                                 <h4>What is the return policy?</h4>
-                                <p>Returns are accepted within 30 days of purchase. Personalized or custom products can't be returned. Products marked as non-returnable within the product's description cannot be returned.</a>.
+                                <p>Returns are accepted within 30 days of MOU/Contract. Personalized or custom products
+                                    can't be returned. Products marked as non-returnable within the product's
+                                    description cannot be returned.</a>.
                                 </p>
 
                                 <br>
 
                                 <h4>What if the wrong item is sent, or the product is defective?</h4>
-                                <p>If you get the wrong item or defective product, please contact Customer Service for help with your order.
+                                <p>If you get the wrong item or defective product, please contact Customer Service at <a
+                                        href="mailto:contact@zodhyatech.com ">contact@zodhyatech.com </a>for help with
+                                    your order.
                                 </p>
 
                                 <br>
@@ -211,14 +215,16 @@
                                 <br>
 
                                 <h4>How to track my return?</h4>
-                                <p>Once a return is processed, you will receive an email notification. For more information on a return that is in process, please contact Customer Service.
-                               
+                                <p>Once a return is processed, you will receive an email notification. For more
+                                    information on a return that is in process, please contact Customer Service at <a
+                                        href="mailto:contact@zodhyatech.com ">contact@zodhyatech.com </a>.
                                 </p>
 
                                 <br>
 
                                 <h4>How long do refunds take?</h4>
-                                <p>Once a refund is processed, it may take 7-10 business days before showing up on your billing statement.
+                                <p>Once a refund is processed, it may take 7-10 business days before showing up on your
+                                    billing statement.
                                 </p>
                             </div>
                         </div>
@@ -284,7 +290,8 @@
                                 </div>
                                 <div class="widget-content">
                                     <ul>
-                                        <li>T-hub Foundation, Knowledge City, Sy No 83/1, Raidurg, Hyderabad - 500081, India
+                                        <li>T-hub Foundation, Knowledge City, Sy No 83/1, Raidurg, Hyderabad - 500081,
+                                            India
                                         </li>
                                         <li><a href="mailto:contact@zodhyatech.com"
                                                 style="color: #f0842c ;">contact@zodhyatech.com</a></li>
@@ -327,35 +334,35 @@
 
     <script>
         document.cookie = "language=en";
-        
+
     </script>
-      <script>
-        
-        const getCookie=(cname)=> {
+    <script>
+
+        const getCookie = (cname) => {
             let name = cname + "=";
             let decodedCookie = decodeURIComponent(document.cookie);
             let ca = decodedCookie.split(';');
-            for(let i = 0; i <ca.length; i++) {
+            for (let i = 0; i < ca.length; i++) {
                 let c = ca[i];
                 while (c.charAt(0) == ' ') {
                     c = c.substring(1);
                 }
                 if (c.indexOf(name) == 0) {
-                   return c.substring(name.length, c.length);
-               }
+                    return c.substring(name.length, c.length);
+                }
             }
             return "";
         }
-        
-        
 
-        let language=getCookie("language")
+
+
+        let language = getCookie("language")
         if (language) {
             document.getElementById('language').textContent = language;
         } else {
             document.getElementById('language').textContent = "en";
         }
-        
+
     </script>
 
 
