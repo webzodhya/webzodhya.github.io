@@ -302,7 +302,7 @@
                 </div>
                 <ul class="footer-nav pull-right">
                     <li><a href="privacy.html">Terms of Service</a></li>
-                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="refundpolicy.html">Refund Policy</a></li>
                 </ul>
             </div>
         </div>
@@ -336,13 +336,11 @@
             return "";
         }
         
-        
-
         let language=getCookie("language")
         if (language) {
             document.getElementById('language').textContent = language;
         } else {
-            document.getElementById('language').textContent = en;
+            document.getElementById('language').textContent = "en";
         }
         
 
