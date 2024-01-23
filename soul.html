@@ -8,16 +8,14 @@
 
     <title>Zodhya - Soul</title>
 
-    <meta name="description"
-        content="Operate your business smarter. Track inefficiencies real time">
+    <meta name="description" content="Operate your business smarter. Track inefficiencies real time">
     <meta name="keywords" content="Zodhya, energy, Calculate, energy bill, Ac, HVAC">
 
     <meta name="twitter:card" content="Zodhya-Soul">
     <meta name="twitter:creator" content="Zodhya-Soul">
     <meta property="og:image" content="https://www.zodhyatech.com/assets/images/logo/socialPreview.png">
     <meta property="og:title" content="Zodhya-Soul">
-    <meta property="og:description"
-        content="Operate your business smarter. Track inefficiencies real time.">
+    <meta property="og:description" content="Operate your business smarter. Track inefficiencies real time.">
     <meta property="og:url" content="https://zodhyatech.com/soul">
     <meta name="author" content="Zodhya-Soul">
 
@@ -110,14 +108,14 @@
                                             onMouseOut="this.style.color='#F68838'" href="contact.html">Contact us</a>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="#" >
+                                        <a href="#">
                                             <i class="fa-solid fa-globe"></i> <span id="language">en</span>
                                         </a>
                                         <ul>
                                             <li> <a href="https://zodhyatech.com">English</a></li>
                                             <li><a href="https://de.zodhyatech.com">German</a></li>
-                                            <li><a href="https://jp.zodhyatech.com">Japanese</a></li> 
-                                            <li><a href="https://es.zodhyatech.com">Spanish</a></li> 
+                                            <li><a href="https://jp.zodhyatech.com">Japanese</a></li>
+                                            <li><a href="https://es.zodhyatech.com">Spanish</a></li>
 
                                         </ul>
                                     </li>
@@ -237,7 +235,9 @@
                                         for your energy consumption.
                                     </li>
                                     <li>
-                                        <i class="fas fa-angle-double-right" style="color: #1b617d;"></i> ML generated monthly reports with actionable insights, making it easy to address operational inefficiencies.
+                                        <i class="fas fa-angle-double-right" style="color: #1b617d;"></i> ML generated
+                                        monthly reports with actionable insights, making it easy to address operational
+                                        inefficiencies.
                                     </li>
                                     <li>
                                         <i class="fas fa-angle-double-right" style="color: #1b617d;"></i> Can be used
@@ -263,7 +263,7 @@
 
 
     <!-- feature-section -->
-    <section class="feature-section feature-element-2 sec-pad-2">
+    <section class="feature-section feature-element-2 sec-pad">
         <div class="auto-container">
             <h1 style="font-weight: 700;">Features</h1>
             <div class="three-item-carousel owl-carousel owl-theme owl-dots owl-nav-none">
@@ -307,7 +307,16 @@
         </div>
     </section>
     <!-- feature-section end -->
-
+     
+    <section class="about-section" style="padding: 5vh">
+        <div class="auto-container">
+            <div class="content-box text-center wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
+                <h3 style="font-style: italic;">Is Soul deployed at your location already? </h3>
+                <h3>Access the dashboard <a href="https://soul.zodhyatech.com" target="_blank" style="color: blue;">here</a></h3>
+            </div>
+        </div>
+    </section>
+    
     <!-- contact-section -->
     <section class="cta-section bg-color-2">
         <div class="pattern-box">
@@ -430,35 +439,35 @@
     <!--End main-footer -->
     <script>
         document.cookie = "language=en";
-        
+
     </script>
-      <script>
-        
-        const getCookie=(cname)=> {
+    <script>
+
+        const getCookie = (cname) => {
             let name = cname + "=";
             let decodedCookie = decodeURIComponent(document.cookie);
             let ca = decodedCookie.split(';');
-            for(let i = 0; i <ca.length; i++) {
+            for (let i = 0; i < ca.length; i++) {
                 let c = ca[i];
                 while (c.charAt(0) == ' ') {
                     c = c.substring(1);
                 }
                 if (c.indexOf(name) == 0) {
-                   return c.substring(name.length, c.length);
-               }
+                    return c.substring(name.length, c.length);
+                }
             }
             return "";
         }
-        
-        
 
-        let language=getCookie("language")
+
+
+        let language = getCookie("language")
         if (language) {
             document.getElementById('language').textContent = language;
         } else {
             document.getElementById('language').textContent = "en";
         }
-        
+
     </script>
 
 
