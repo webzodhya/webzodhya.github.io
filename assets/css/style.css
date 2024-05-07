@@ -494,6 +494,9 @@ img {
   -webkit-transition: all 500ms ease;
   -ms-transition: all 500ms ease;
   -o-transition: all 500ms ease;
+  /* align-items: center; */
+  text-align: center; 
+ 
 }
 
 .sticky-header {
