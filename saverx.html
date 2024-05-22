@@ -11,9 +11,9 @@
     <meta name="description"
         content="Add intelligence to your existing BMS and increase the savings on your energy bills by 3X.">
     <meta name="keywords" content="Zodhya, energy, energy bill, Ac, HVAC, saver, saverx, soul, Energy consumption">
-    
+
     <meta name="twitter:card" content="Zodhya-SaverX
-    <meta name="twitter:creator" content="Zodhya-SaverX">
+    <meta name=" twitter:creator" content="Zodhya-SaverX">
     <meta property="og:image" content="https://www.zodhyatech.com/assets/images/products/saverx/SaverX.png">
     <meta property="og:title" content="Zodhya-SaverX">
     <meta property="og:description"
@@ -102,19 +102,19 @@
                                         </ul>
                                     </li>
                                     <li><a href="faqs.html">FAQ</a></li>
-                                    <li><a href="https://blog.zodhyatech.com" >Blogs</a></li>
+                                    <li><a href="https://blog.zodhyatech.com">Blogs</a></li>
                                     <li><a style="color:#F68838;" onMouseOver="this.style.color='#1b617d'"
                                             onMouseOut="this.style.color='#F68838'" href="contact.html">Contact us</a>
                                     </li>
                                     <li class="dropdown">
-                                        <a href="#" >
+                                        <a href="#">
                                             <i class="fa-solid fa-globe"></i> <span id="language">en</span>
                                         </a>
                                         <ul>
                                             <li> <a href="https://zodhyatech.com">English</a></li>
                                             <li><a href="https://de.zodhyatech.com">German</a></li>
-                                            <li><a href="https://jp.zodhyatech.com">Japanese</a></li> 
-                                            <li><a href="https://es.zodhyatech.com">Spanish</a></li> 
+                                            <li><a href="https://jp.zodhyatech.com">Japanese</a></li>
+                                            <li><a href="https://es.zodhyatech.com">Spanish</a></li>
 
                                         </ul>
                                     </li>
@@ -237,7 +237,7 @@
         <div class="auto-container">
             <div class="row clearfix">
                 <div class="col-lg-6 col-md-6 col-sm-12 content-column">
-                    <div id="content_block_01" style="margin-top: 53px">
+                    <div id="content_block_01" style="">
                         <div class="content-box">
                             <div class="sec-title wow slideInUp" data-wow-delay="00ms" data-wow-duration="1500ms">
                                 <h2>SaverX</h2>
@@ -290,7 +290,8 @@
                                 </div>
                                 <i class="fa-solid fa-brain"></i>
                             </div>
-                            <p style="font-weight: 600;">AI edge device that understands your HVAC energy needs real-time and optimizes your consumption</p>
+                            <p style="font-weight: 600;">AI edge device that understands your HVAC energy needs
+                                real-time and optimizes your consumption</p>
                         </div>
                     </div>
                 </div>
@@ -322,7 +323,8 @@
                                 </div>
                                 <i class="fa-brands fa-staylinked"></i>
                             </div>
-                            <p style="font-weight: 600;">Can integrate with your existing control systems without affecting your HVACs.</p>
+                            <p style="font-weight: 600;">Can integrate with your existing control systems without
+                                affecting your HVACs.</p>
                         </div>
                     </div>
                 </div>
@@ -461,35 +463,35 @@
     </button>
     <script>
         document.cookie = "language=en";
-        
+
     </script>
-      <script>
-        
-        const getCookie=(cname)=> {
+    <script>
+
+        const getCookie = (cname) => {
             let name = cname + "=";
             let decodedCookie = decodeURIComponent(document.cookie);
             let ca = decodedCookie.split(';');
-            for(let i = 0; i <ca.length; i++) {
+            for (let i = 0; i < ca.length; i++) {
                 let c = ca[i];
                 while (c.charAt(0) == ' ') {
                     c = c.substring(1);
                 }
                 if (c.indexOf(name) == 0) {
-                   return c.substring(name.length, c.length);
-               }
+                    return c.substring(name.length, c.length);
+                }
             }
             return "";
         }
-        
-        
 
-        let language=getCookie("language")
+
+
+        let language = getCookie("language")
         if (language) {
             document.getElementById('language').textContent = language;
         } else {
             document.getElementById('language').textContent = "en";
         }
-        
+
     </script>
 
 
