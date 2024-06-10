@@ -82,6 +82,14 @@
 
     <img src="assets/images/temp/comp.gif" class="rounded mx-auto d-block " alt="..." height="500" width="500">
     <div class="row align-items-center p-3">
+      <div class="col-12">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary" onclick="changetoOffice()" >Office</button>
+            <button type="button" class="btn btn-warning" onclick="changetoMall()">Mall</button>
+            <input type="number" id="building" value="1" hidden>
+        </div>
+      </div>
+      
       <div class="col-md-12 col-lg-6 col-sm-12">
         <div class=" saverxbox p-3">
           <table class="table">
@@ -119,12 +127,12 @@
 
               <tr>
                 <th scope="row">Working hours </th>
-                <td>13 hours/day</td>
+                <td id="workingHours">13 hours/day</td>
               </tr>
 
               <tr>
                 <th scope="row">Duration</th>
-                <td>One Month (March)</td>
+                <td>One Month (May)</td>
               </tr>
 
             </tbody>
@@ -333,6 +341,25 @@
     })
 
   </script>
+
+  <script>
+        function changetoMall() {
+            // Get the element with id "workingHours"
+            var workingHoursElement = document.getElementById("workingHours");
+            // Change the inner text of the element to "18 hours/day"
+            workingHoursElement.innerText = "18 hours/day";
+            document.getElementById("building").value = "2";
+        }
+
+        function changetoOffice() {
+            // Get the element with id "workingHours"
+            var workingHoursElement = document.getElementById("workingHours");
+            // Change the inner text of the element to "18 hours/day"
+            workingHoursElement.innerText = "13 hours/day";
+            document.getElementById("building").value = "1";
+        }
+
+    </script>
 
   </div>
 </body>
