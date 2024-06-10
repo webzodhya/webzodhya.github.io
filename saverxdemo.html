@@ -55,21 +55,22 @@
       box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
       transform: translateY(0);
     }
+
     .button-5:disabled {
       background-color: #81898bd1;
       box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
       transform: translateY(0);
     }
   </style>
-   <!-- Google tag (gtag.js) -->
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VM2VGRHEX1"></script>
-   <script>
-       window.dataLayer = window.dataLayer || [];
-       function gtag() { dataLayer.push(arguments); }
-       gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VM2VGRHEX1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-       gtag('config', 'G-VM2VGRHEX1');
-   </script>
+    gtag('config', 'G-VM2VGRHEX1');
+  </script>
 </head>
 
 <body>
@@ -80,16 +81,16 @@
   </div>
   <div class="container">
 
-    <img src="assets/images/temp/comp.gif" class="rounded mx-auto d-block " alt="..." height="500" width="500">
+    <img src="assets/images/temp/comp.gif" class="rounded mx-auto d-block " alt="..." height="500" width="500" id="buildingimg">
     <div class="row align-items-center p-3">
       <div class="col-12">
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-primary" onclick="changetoOffice()" >Office</button>
-            <button type="button" class="btn btn-warning" onclick="changetoMall()">Mall</button>
-            <input type="number" id="building" value="1" hidden>
+          <button type="button" class="btn btn-primary" onclick="changetoOffice()">Office</button>
+          <button type="button" class="btn btn-warning" onclick="changetoMall()">Mall</button>
+          <input type="number" id="building" value="1" hidden>
         </div>
       </div>
-      
+
       <div class="col-md-12 col-lg-6 col-sm-12">
         <div class=" saverxbox p-3">
           <table class="table">
@@ -115,7 +116,7 @@
                 <th scope="row">Location</th>
                 <td>
                   <select id="city">
-                    <option  value="hyderabad">Hyderabad (IND)</option>
+                    <option value="hyderabad">Hyderabad (IND)</option>
                     <option value="delhi"> New Delhi (IND)</option>
                     <option value="chennai">Chennai (IND)</option>
                     <option value="tokyo">Tokyo (JP)</option>
@@ -129,6 +130,11 @@
                 <th scope="row">Working hours </th>
                 <td id="workingHours">13 hours/day</td>
               </tr>
+              <tr>
+                <th scope="row">Number of floors</th>
+                <td>5</td>
+              </tr>
+
 
               <tr>
                 <th scope="row">Duration</th>
@@ -212,7 +218,7 @@
                 </div>
               </div>
             </div>
-            <button class="button-5 btn-zodhya" role="button" id="simulate" >Simulate Energy Consumption</button>
+            <button class="button-5 btn-zodhya" role="button" id="simulate">Simulate Energy Consumption</button>
           </form>
         </div>
       </div>
@@ -270,6 +276,10 @@
       let city = document.getElementById("city");
       let city_value = city.value;
 
+      let buildingtype = document.getElementById("building")
+      let buildingtype_value = buildingtype.value;
+
+
       let result = document.getElementById('result')
       let loader = document.getElementById('loader')
       result.style.display = 'block'
@@ -303,7 +313,8 @@
         "cooling_water_temperature_setpoint": cooling_water_temperature_setpoint_value,
         "chiller_setpoint_temperature": chiller_setpoint_temperature_value,
         "ahu_opening_percentage": ahu_opening_percentage_value,
-        "city": city_value
+        "city": city_value,
+        "building_type": buildingtype_value
       }
       console.log(data);
       const daygraph = document.querySelector("#daygraph");
@@ -343,23 +354,30 @@
   </script>
 
   <script>
-        function changetoMall() {
-            // Get the element with id "workingHours"
-            var workingHoursElement = document.getElementById("workingHours");
-            // Change the inner text of the element to "18 hours/day"
-            workingHoursElement.innerText = "18 hours/day";
-            document.getElementById("building").value = "2";
-        }
+    function changetoMall() {
+      // Get the element with id "workingHours"
+      let workingHoursElement = document.getElementById("workingHours");
+      let imageElement = document.getElementById("buildingimg");
+      let newImageSource = "assets/images/temp/mall.gif";
+      // Change the inner text of the element to "18 hours/day"
+      workingHoursElement.innerText = "18 hours/day";
+      document.getElementById("building").value = "2";
+      imageElement.src = newImageSource;
+    }
 
-        function changetoOffice() {
-            // Get the element with id "workingHours"
-            var workingHoursElement = document.getElementById("workingHours");
-            // Change the inner text of the element to "18 hours/day"
-            workingHoursElement.innerText = "13 hours/day";
-            document.getElementById("building").value = "1";
-        }
+    function changetoOffice() {
+      // Get the element with id "workingHours"
+      let workingHoursElement = document.getElementById("workingHours");
+      let imageElement = document.getElementById("buildingimg");
+      let newImageSource = "assets/images/temp/comp.gif";
 
-    </script>
+      // Change the inner text of the element to "18 hours/day"
+      workingHoursElement.innerText = "13 hours/day";
+      document.getElementById("building").value = "1";
+      imageElement.src = newImageSource;
+    }
+
+  </script>
 
   </div>
 </body>
