@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LSTM Model Input Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .input-field {
+            margin-bottom: 10px;
+        }
+        .readings-group {
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .readings-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .reading-input {
+            flex: 1;
+            min-width: 100px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .action-buttons button {
+            flex: 1;
+        }
+        .secondary-button {
+            background-color: #6c757d;
+        }
+        .secondary-button:hover {
+            background-color: #5a6268;
+        }
+        .mean-value {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 5px;
+        }
+        .add-reading-btn {
+            background-color: #007bff;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .add-reading-btn:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            color: #a94442;
+        }
+        /* Replace or modify the consumption grid related styles */
+        .consumption-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);  /* 4 columns */
+            grid-gap: 8px;  /* Smaller gap */
+            width: 100%;
+        }
+
+        .consumption-input {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 4px;  /* Reduce vertical spacing */
+        }
+
+        .consumption-input label {
+            font-size: 14px;
+            margin-bottom: 2px;  /* Less space between label and input */
+            color: #555;
+        }
+
+        .consumption-input input {
+            padding: 4px 8px;  /* Smaller padding */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Add these styles for the consumption section */
+        .form-section:has(#consumptionContainer) {
+            padding: 15px;
+        }
+
+        .form-section:has(#consumptionContainer) h3 {
+            margin-bottom: 12px;
+        }
+
+        /* Update these styles for the consumption section */
+        .consumption-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(120px, 1fr)); /* Wider minimum width */
+            gap: 16px; /* More consistent spacing */
+            padding: 10px;
+        }
+
+        .consumption-input input {
+            width: 100%;
+            min-width: 100px; /* Ensure minimum width */
+            padding: 6px 8px;
+            font-size: 16px; /* Larger font for better readability */
+        }
+
+        /* If you have a container holding the consumption grid */
+        #consumptionContainer {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 15px; /* Add some padding on the sides */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>LSTM Model Input Form</h2>
+        <form id="lstmForm">
+            <div class="form-section">
+                <h3>Chiller Settings</h3>
+                <div class="input-group">
+                    <div class="input-field">
+                        <label for="setpoint">Setpoint</label>
+                        <input type="number" id="setpoint" name="setpoint" step="0.1" value="7">
+                    </div>
+                </div>
+                
+                <h4>Chiller Setpoints (Last 7 readings)</h4>
+                <div class="input-group">
+                    <div class="input-field" id="chillerSetpointsContainer"></div>
+                </div>
+                
+                <h4>Chiller Run Status (Last 7 readings)</h4>
+                <div class="input-group">
+                    <div class="input-field" id="chillerRunStatusContainer"></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Temperature Readings</h3>
+                <div id="temperatureReadings">
+                    <div class="readings-group">
+                        <label>Average FLA</label>
+                        <div class="readings-inputs" id="avg_fla_readings">
+                            <div class="reading-input">
+                                <input type="number" step="0.1" placeholder="Reading 1">
+                            </div>
+                        </div>
+                        <button type="button" class="add-reading-btn" onclick="addReading('avg_fla_readings')">+ Add Reading</button>
+                        <div class="mean-value">Mean: <span id="avg_fla_mean">-</span></div>
+                        <input type="hidden" id="avg_fla">
+                    </div>
+
+                    <div class="readings-group">
+                        <label>Cooling Tower Inlet Temperature</label>
+                        <div class="readings-inputs" id="cooling_tower_inlet_readings">
+                            <div class="reading-input">
+                                <input type="number" step="0.1" placeholder="Reading 1">
+                            </div>
+                        </div>
+                        <button type="button" class="add-reading-btn" onclick="addReading('cooling_tower_inlet_readings')">+ Add Reading</button>
+                        <div class="mean-value">Mean: <span id="cooling_tower_inlet_mean">-</span></div>
+                        <input type="hidden" id="cooling_tower_inlet">
+                    </div>
+
+                    <div class="readings-group">
+                        <label>Cooling Tower Outlet Temperature</label>
+                        <div class="readings-inputs" id="cooling_tower_outlet_readings">
+                            <div class="reading-input">
+                                <input type="number" step="0.1" placeholder="Reading 1">
+                            </div>
+                        </div>
+                        <button type="button" class="add-reading-btn" onclick="addReading('cooling_tower_outlet_readings')">+ Add Reading</button>
+                        <div class="mean-value">Mean: <span id="cooling_tower_outlet_mean">-</span></div>
+                        <input type="hidden" id="cooling_tower_outlet">
+                    </div>
+
+                    
+                    
+                    <div class="readings-group">
+                        <label>Evaporator Leaving Temperature</label>
+                        <div class="readings-inputs" id="evaporator_leaving_readings">
+                            <div class="reading-input">
+                                <input type="number" step="0.1" placeholder="Reading 1">
+                            </div>
+                        </div>
+                        <button type="button" class="add-reading-btn" onclick="addReading('evaporator_leaving_readings')">+ Add Reading</button>
+                        <div class="mean-value">Mean: <span id="evaporator_leaving_mean">-</span></div>
+                        <input type="hidden" id="evaporator_leaving">
+                    </div>
+                    <div class="readings-group">
+                        <label>Evaporator Entering Temperature</label>
+                        <div class="readings-inputs" id="evaporator_entering_readings">
+                            <div class="reading-input">
+                                <input type="number" step="0.1" placeholder="Reading 1">
+                            </div>
+                        </div>
+                        <button type="button" class="add-reading-btn" onclick="addReading('evaporator_entering_readings')">+ Add Reading</button>
+                        <div class="mean-value">Mean: <span id="evaporator_entering_mean">-</span></div>
+                        <input type="hidden" id="evaporator_entering">
+                    </div>
+                    <div class="readings-group">
+                        <label>Condenser Leaving Temperature</label>
+                        <div class="readings-inputs" id="condenser_leaving_readings">
+                            <div class="reading-input">
+                                <input type="number" step="0.1" placeholder="Reading 1">
+                            </div>
+                        </div>
+                        <button type="button" class="add-reading-btn" onclick="addReading('condenser_leaving_readings')">+ Add Reading</button>
+                        <div class="mean-value">Mean: <span id="condenser_leaving_mean">-</span></div>
+                        <input type="hidden" id="condenser_leaving">
+                    </div>
+                    
+                    <div class="readings-group">
+                        <label>Condenser Entering Temperature</label>
+                        <div class="readings-inputs" id="condenser_entering_readings">
+                            <div class="reading-input">
+                                <input type="number" step="0.1" placeholder="Reading 1">
+                            </div>
+                        </div>
+                        <button type="button" class="add-reading-btn" onclick="addReading('condenser_entering_readings')">+ Add Reading</button>
+                        <div class="mean-value">Mean: <span id="condenser_entering_mean">-</span></div>
+                        <input type="hidden" id="condenser_entering">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>System Status</h3>
+                <div class="input-group">
+                    <div class="input-field">
+                        <label for="latest_consumption">Latest Consumption</label>
+                        <input type="number" id="latest_consumption" step="0.1">
+                    </div>
+                    <div class="input-field">
+                        <label for="n_chillers_on">Number of Chillers On</label>
+                        <input type="number" id="n_chillers_on">
+                    </div>
+                    <div class="input-field">
+                        <label for="outdoor_temp">Outdoor Temperature</label>
+                        <input type="number" id="outdoor_temp" step="0.1">
+                    </div>
+                    <div class="input-field">
+                        <label for="humidity">Humidity (%)</label>
+                        <input type="number" id="humidity" step="0.1">
+                    </div>
+                    <div class="input-field">
+                        <label for="low_load">Low Load</label>
+                        <input type="number" id="low_load" min="0" max="1" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Time and Date</h3>
+                <div class="input-group">
+                    <div class="input-field">
+                        <label for="hour">Hour (0-23)</label>
+                        <input type="number" id="hour" min="0" max="23">
+                    </div>
+                    <div class="input-field">
+                        <label for="day">Day</label>
+                        <input type="number" id="day" min="1" max="31">
+                    </div>
+                    <div class="input-field">
+                        <label for="month">Month</label>
+                        <input type="number" id="month" min="1" max="12">
+                    </div>
+                    <div class="input-field">
+                        <label for="weekday">Weekday</label>
+                        <input type="number" id="weekday" min="0" max="6">
+                    </div>
+                    <div class="input-field">
+                        <label for="week_of_month">Week of Month</label>
+                        <input type="number" id="week_of_month" min="1" max="5">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Last 24 Hours Consumption</h3>
+                <div class="input-group">
+                    <div class="input-field" id="consumptionContainer"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit">Calculate Best Action</button>
+                <button type="button" class="secondary-button" onclick="saveFormData()">Save Values</button>
+                <button type="button" class="secondary-button" onclick="loadFormData()">Load Last Values</button>
+            </div>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        // Function to add a new reading input
+        function addReading(containerId) {
+            const container = document.getElementById(containerId);
+            const readingCount = container.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'reading-input';
+            div.innerHTML = `<input type="number" step="0.1" placeholder="Reading ${readingCount}">`;
+            
+            // Add change event listener to recalculate mean
+            div.querySelector('input').addEventListener('change', () => calculateMean(containerId));
+            
+            container.appendChild(div);
+        }
+
+        // Function to calculate mean for a readings group
+        function calculateMean(containerId) {
+            const container = document.getElementById(containerId);
+            const inputs = container.querySelectorAll('input');
+            let sum = 0;
+            let count = 0;
+            
+            inputs.forEach(input => {
+                if (input.value !== '') {
+                    sum += parseFloat(input.value);
+                    count++;
+                }
+            });
+
+            const mean = count > 0 ? sum / count : 0;
+            const meanId = containerId.replace('_readings', '_mean');
+            document.getElementById(meanId).textContent = mean.toFixed(2);
+            
+            // Update the corresponding hidden input for form submission
+            const hiddenInputId = containerId.replace('_readings', '');
+            document.getElementById(hiddenInputId).value = mean;
+        }
+
+        // Modify the loadFormData function to handle multiple temperature readings
+        function loadFormData() {
+            const savedData = localStorage.getItem('lstmFormData');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                
+                // First, handle all regular inputs
+                Object.keys(formData).forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input && !id.includes('readings')) {
+                        input.value = formData[id];
+                    }
+                });
+
+                // Handle temperature readings
+                const readingGroups = [
+                    'avg_fla_readings',
+                    'cooling_tower_inlet_readings',
+                    'cooling_tower_outlet_readings',
+                    'condenser_entering_readings',
+                    'condenser_leaving_readings',
+                    'evaporator_leaving_readings',
+                    'evaporator_entering_readings'
+                ];
+
+                readingGroups.forEach(groupId => {
+                    if (formData[groupId]) {
+                        const container = document.getElementById(groupId);
+                        // Clear existing readings
+                        container.innerHTML = '';
+                        // Add readings from saved data
+                        formData[groupId].forEach((value, index) => {
+                            const div = document.createElement('div');
+                            div.className = 'reading-input';
+                            div.innerHTML = `<input type="number" step="0.1" placeholder="Reading ${index + 1}" value="${value}">`;
+                            div.querySelector('input').addEventListener('change', () => calculateMean(groupId));
+                            container.appendChild(div);
+                        });
+                        calculateMean(groupId);
+                    }
+                });
+
+                alert('Form data loaded!');
+            } else {
+                alert('No saved data found!');
+            }
+        }
+
+        // Modify saveFormData to save temperature readings
+        function saveFormData() {
+            const formData = {};
+            // Save regular inputs
+            document.querySelectorAll('input').forEach(input => {
+                if (input.id && !input.id.includes('readings')) {
+                    formData[input.id] = input.value;
+                }
+            });
+
+            // Save temperature readings
+            document.querySelectorAll('[id$="_readings"]').forEach(container => {
+                const readings = [];
+                container.querySelectorAll('input').forEach(input => {
+                    if (input.value !== '') {
+                        readings.push(input.value);
+                    }
+                });
+                formData[container.id] = readings;
+            });
+
+            localStorage.setItem('lstmFormData', JSON.stringify(formData));
+            alert('Form data saved!');
+        }
+
+        // Add these functions for consumption history management
+        function shiftConsumptionHistory(newValue) {
+            // Get all consumption values
+            const values = [];
+            for (let i = 0; i < 24; i++) {
+                const input = document.getElementById(`consumption_${i}`);
+                if (input.value !== '') {
+                    values.push(parseFloat(input.value));
+                }
+            }
+            
+            // Shift values left
+            values.shift(); // Remove oldest value
+            values.push(newValue); // Add new value
+
+            // Update inputs
+            for (let i = 0; i < 24; i++) {
+                const input = document.getElementById(`consumption_${i}`);
+                input.value = values[i] || '';
+            }
+        }
+
+        // Add a button and input for adding new consumption values
+        function addConsumptionControls() {
+            const container = document.querySelector('.form-section:has(#consumptionContainer)');
+            const controls = document.createElement('div');
+            controls.className = 'consumption-controls';
+            controls.style.marginTop = '10px';
+            controls.innerHTML = `
+                <div style="display: flex; gap: 10px; align-items: flex-end;">
+                    <div style="flex: 1;">
+                        <label for="new_consumption">New Consumption Value</label>
+                        <input type="number" id="new_consumption" step="0.1">
+                    </div>
+                    <button type="button" onclick="addNewConsumption()" style="height: 35px;">Add New Reading</button>
+                </div>
+            `;
+            container.appendChild(controls);
+        }
+
+        function addNewConsumption() {
+            const newValue = parseFloat(document.getElementById('new_consumption').value);
+            if (!isNaN(newValue)) {
+                shiftConsumptionHistory(newValue);
+                document.getElementById('new_consumption').value = '';
+                // Also update latest_consumption
+                document.getElementById('latest_consumption').value = newValue;
+            } else {
+                alert('Please enter a valid consumption value');
+            }
+        }
+
+        // Add this to your DOMContentLoaded event handler
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... existing code ...
+            addConsumptionControls();
+        });
+
+        // Initialize the form
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create dynamic input fields for chiller setpoints
+            const chillerSetpointsContainer = document.getElementById('chillerSetpointsContainer');
+            for (let i = 0; i < 7; i++) {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <label for="chiller_setpoint_${i}">Setpoint ${i + 1}</label>
+                    <input type="number" id="chiller_setpoint_${i}" step="0.1" value="7">
+                `;
+                chillerSetpointsContainer.appendChild(div);
+            }
+
+            // Create dynamic input fields for chiller run status
+            const chillerRunStatusContainer = document.getElementById('chillerRunStatusContainer');
+            for (let i = 0; i < 7; i++) {
+                const div = document.createElement('div');
+                div.innerHTML = `
+                    <label for="chiller_status_${i}">Status ${i + 1}</label>
+                    <input type="number" id="chiller_status_${i}" min="0" max="1" value="0">
+                `;
+                chillerRunStatusContainer.appendChild(div);
+            }
+            
+            const consumptionContainer = document.getElementById('consumptionContainer');
+            consumptionContainer.className = 'consumption-grid';
+            for (let i = 0; i < 24; i++) {
+                const div = document.createElement('div');
+                div.className = 'consumption-input';
+                div.innerHTML = `
+                    <label>Hour -${24-i}</label>
+                    <input type="number" id="consumption_${i}" step="0.1">
+                `;
+                consumptionContainer.appendChild(div);
+            }
+
+            // Add change event listeners to all initial reading inputs
+            document.querySelectorAll('.readings-inputs input').forEach(input => {
+                input.addEventListener('change', () => {
+                    calculateMean(input.closest('.readings-inputs').id);
+                });
+            });
+
+            // Try to load last saved data
+            loadFormData();
+        });
+
+        // Form submission handler
+        document.getElementById('lstmForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect all the input values
+            const formData = {
+                setpoint: parseFloat(document.getElementById('setpoint').value),
+                chiller_setpoints: Array.from({length: 7}, (_, i) => 
+                    parseFloat(document.getElementById(`chiller_setpoint_${i}`).value)
+                ),
+                chiller_runstatus: Array.from({length: 7}, (_, i) => 
+                    parseInt(document.getElementById(`chiller_status_${i}`).value)
+                ),
+                avg_fla: parseFloat(document.getElementById('avg_fla').value),
+                cooling_tower_inlet: parseFloat(document.getElementById('cooling_tower_inlet').value),
+                cooling_tower_outlet: parseFloat(document.getElementById('cooling_tower_outlet').value),
+                condenser_entering: parseFloat(document.getElementById('condenser_entering').value),
+                condenser_leaving: parseFloat(document.getElementById('condenser_leaving').value),
+                evaporator_leaving: parseFloat(document.getElementById('evaporator_leaving').value),
+                evaporator_entering: parseFloat(document.getElementById('evaporator_entering').value),
+                latest_consumption: parseFloat(document.getElementById('latest_consumption').value),
+                n_chillers_on: parseInt(document.getElementById('n_chillers_on').value),
+                outdoor_temp: parseFloat(document.getElementById('outdoor_temp').value),
+                humidity: parseFloat(document.getElementById('humidity').value),
+                hour: parseInt(document.getElementById('hour').value),
+                day: parseInt(document.getElementById('day').value),
+                month: parseInt(document.getElementById('month').value),
+                weekday: parseInt(document.getElementById('weekday').value),
+                week_of_month: parseInt(document.getElementById('week_of_month').value),
+                is_first_week: 0,  // You can make this dynamic if needed
+                low_load: parseInt(document.getElementById('low_load').value) || 0,  // Add this line
+
+                day_of_week: parseInt(document.getElementById('weekday').value)
+            };
+
+            // Calculate hour_sin, hour_cos, day_sin, day_cos
+            formData.hour_sin = Math.sin(2 * Math.PI * formData.hour / 24);
+            formData.hour_cos = Math.cos(2 * Math.PI * formData.hour / 24);
+            formData.day_sin = Math.sin(2 * Math.PI * formData.day_of_week / 7);
+            formData.day_cos = Math.cos(2 * Math.PI * formData.day_of_week / 7);
+
+            // Get consumption values
+            const consumptions = Array.from({length: 24}, (_, i) => 
+                parseFloat(document.getElementById(`consumption_${i}`).value)
+            );
+            const last_12_consumptions = consumptions.slice(-12);
+
+            // Calculate statistics
+            const rolling_mean_24h = consumptions.reduce((a, b) => a + b, 0) / 24;
+            const rolling_std_24h = Math.sqrt(
+                consumptions.reduce((a, b) => a + Math.pow(b - rolling_mean_24h, 2), 0) / 24
+            );
+            const rolling_mean_12h = last_12_consumptions.reduce((a, b) => a + b, 0) / 12;
+            const rolling_std_12h = Math.sqrt(
+                last_12_consumptions.reduce((a, b) => a + Math.pow(b - rolling_mean_12h, 2), 0) / 12
+            );
+
+            // Add calculated statistics to formData
+            formData.rolling_mean_24h = rolling_mean_24h;
+            formData.rolling_std_24h = rolling_std_24h;
+            formData.rolling_mean_12h = rolling_mean_12h;
+            formData.rolling_std_12h = rolling_std_12h;
+            
+            // Calculate consumption diff and pct change
+            const latest_consumption = parseFloat(document.getElementById('latest_consumption').value);
+            const last_consumption = parseFloat(document.getElementById('consumption_23').value);
+            formData.consumption_diff = latest_consumption - last_consumption;
+            formData.consumption_pct_change = (latest_consumption - last_consumption) / last_consumption;
+
+            // Send data to Python backend
+            fetch('https://saverxx-435059368913.asia-south1.run.app/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <h3>Prediction Results:</h3>
+                    <p>Best Setpoint Action: ${data.best_action.toFixed(2)}</p>
+                    <p>Predicted Consumption: ${data.predicted_consumption.toFixed(2)}</p>
+                `;
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'success';
+            })
+            .catch(error => {
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = `
+                    <h3>Error:</h3>
+                    <p>Failed to get prediction. Make sure the server is running on port 5000.</p>
+                    <p>Error details: ${error.message}</p>
+                `;
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'error';
+            });
+        });
+    </script>
+</body>
+</html>
