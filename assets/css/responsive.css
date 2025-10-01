@@ -27,8 +27,81 @@
 
 @media only screen and (max-width: 1200px){
 
+  .main-header .outer-container .header-upper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .main-header .outer-container .outer-box {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+
+  .main-header .outer-container .logo-box {
+    flex-shrink: 0;
+  }
+
+  .main-header .outer-container .menu-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .main-header .outer-container .menu-area .main-menu {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .main-header .outer-container .menu-area .main-menu .navigation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .main-header .outer-container .menu-right-content {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
   .main-menu .navigation > li{
     margin: 0px 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .main-menu .navigation > li > a {
+    padding: 20px 0px !important;
+  }
+
+  /* Align dropdown caret with link text on medium screens */
+  .main-menu .navigation li.dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .main-menu .navigation li.dropdown > a {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .main-menu .navigation li.dropdown .dropdown-btn {
+    position: static;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    line-height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+    top: auto;
+    right: auto;
   }
 
   #image_block_03 .image-box .image-1{
@@ -71,7 +144,7 @@
 
 
 
-@media only screen and (max-width: 1089px){
+@media only screen and (max-width: 992px){
 
   .main-menu,
   .sticky-header,
@@ -280,7 +353,9 @@
 
 
 @media only screen and (max-width: 767px){
-
+  .main-header .outer-container{
+    padding: 0px 5px;
+  }
   .banner-section{
     padding: 150px 0px 70px 0px;
   }
@@ -705,7 +780,12 @@
   }
 
   .main-header .outer-container .menu-right-content{
-    display: none;
+    display: block;
+  }
+
+  .main-header .outer-container .menu-right-content .btn-box a {
+    font-size: 14px;
+    padding: 8px 20px;
   }
 
   .testimonial-style-two .testimonial-content .inner-box{
@@ -747,6 +827,10 @@
 
 
 @media only screen and (max-width: 399px){
+
+  .mobile-menu {
+    width: 280px;
+  }
 
   .portfolio-details .inner-container .content-box .right-content .list li{
     width: 100%;
