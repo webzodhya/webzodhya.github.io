@@ -543,19 +543,18 @@ img {
 }
 
 .main-header .outer-container {
-  position: absolute;
-  left: 0px;
-  top: 0px;
+  position: relative;
   width: 100%;
   background: transparent;
-  padding: 0px 100px;
-  margin-left: auto;
-  margin-right: auto;
+  /* padding: 0px 100px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-header .outer-container .logo-box {
-  padding: 61px 0px 30px 0px;
-  margin-right: 125px;
+  padding: 50px 0px 30px 0px;
+  /* margin-right: 125px; */
 }
 
 .main-header .outer-container .menu-right-content .phone,
@@ -1308,7 +1307,7 @@ div#mCSB_1_container {
 .banner-section {
   position: relative;
   background: #fff;
-  padding: 210px 0px 100px 0px;
+  padding: 25px 0px 25px 0px;
 }
 
 .banner-section .content-box .btn-box .video-btn {
@@ -1320,7 +1319,7 @@ div#mCSB_1_container {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   color: #3b3b3b;
-  padding: 15px 0px 15px 75px;
+  padding: 15px 0px 15px 0px;
   z-index: 1;
 }
 
@@ -3362,7 +3361,7 @@ div#mCSB_1_container {
 
 .banner-section.style-three {
   position: relative;
-  padding: 200px 0px 25px 0px;
+  padding: 25px 0px 25px 0px;
 }
 
 .banner-section.style-three .image-box {
@@ -3779,7 +3778,7 @@ div#mCSB_1_container {
 
 .page-title {
   position: relative;
-  padding: 150px 0px 70px 0px;
+  padding: 70px 0px 70px 0px;
 }
 
 .page-title .pattern-layer {
