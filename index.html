@@ -302,10 +302,13 @@
         .cookie-consent-content { display:flex; gap:12px; align-items:flex-start; flex:1 1 auto; }
         .cookie-consent-text { font-size:14px; color:#1b1b1b; line-height:1.4; }
         .cookie-consent-actions { display:flex; gap:8px; align-items:center; }
-        .cookie-btn { padding:8px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; }
+        .cookie-btn { padding:8px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; transition:all 0.3s ease; font-size:14px; }
         .cookie-btn.primary { background:#1b617d; color:#fff; }
+        .cookie-btn.primary:hover { background:#155a75; transform:translateY(-1px); box-shadow:0 4px 8px rgba(27,97,125,0.3); }
         .cookie-btn.ghost { background:transparent; border:1px solid #e5e7eb; color:#1b1b1b; }
-        .cookie-link { color:#1b617d; text-decoration:underline; cursor:pointer; font-weight:600; }
+        .cookie-btn.ghost:hover { background:#f5f5f5; border-color:#1b617d; color:#1b617d; }
+        .cookie-link { color:#1b617d; text-decoration:underline; cursor:pointer; font-weight:600; transition:color 0.3s ease; }
+        .cookie-link:hover { color:#155a75; }
         @media (max-width:767px){
             .cookie-consent-banner{ left:12px; right:12px; bottom:12px; padding:12px; flex-direction:column; align-items:stretch; }
             .cookie-consent-actions{ justify-content:flex-end; }
@@ -894,27 +897,26 @@
     </div>
 
         <!-- Cookie Consent Banner -->
-        <!-- <div id="cookie-consent" class="cookie-consent-banner" style="display:none;">
+        <div id="cookie-consent" class="cookie-consent-banner" style="display:none;">
                 <div class="cookie-consent-content">
                         <div style="width:48px; flex-shrink:0;">
                                 <img src="assets/images/icon01.png" alt="logo" style="width:48px; height:48px; object-fit:contain;">
                         </div>
                         <div class="cookie-consent-text">
-                                We use cookies to personalise content, provide social media features and analyse our traffic. Some cookies are necessary for the website to function. You can manage your preferences or accept all.
+                                We use cookies to enhance your browsing experience and analyze website traffic. Some cookies are necessary for the website to function properly. By clicking "Accept", you consent to our use of cookies.
                                 <div style="margin-top:8px;">
                                         <a href="privacy.html" target="_blank" class="cookie-link">Privacy Policy</a>
                                 </div>
                         </div>
                 </div>
                 <div class="cookie-consent-actions">
-                        <button id="cookie-reject" class="cookie-btn ghost">Reject All</button>
-                        <button id="cookie-manage" class="cookie-btn ghost">Manage</button>
-                        <button id="cookie-accept" class="cookie-btn primary">Accept All</button>
+                        <button id="cookie-reject" class="cookie-btn ghost">Reject</button>
+                        <button id="cookie-accept" class="cookie-btn primary">Accept</button>
                 </div>
-        </div> -->
+        </div>
 
         <!-- Cookie Preferences Modal -->
-        <!-- <div class="modal fade" id="cookieModal" tabindex="-1" role="dialog" aria-labelledby="cookieModalLabel" aria-hidden="true">
+        <div class="modal fade" id="cookieModal" tabindex="-1" role="dialog" aria-labelledby="cookieModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -960,7 +962,7 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
     <!-- Newsletter Modal -->
     <div class="modal fade" id="newsletterModal" tabindex="-1" role="dialog" aria-labelledby="newsletterModalLabel" aria-hidden="true">
@@ -1078,11 +1080,31 @@
             var closeBtn = document.getElementById('newsletter-fab-close');
             var openBtn = document.getElementById('newsletter-fab-btn');
             var cookieKey = 'zodhya_newsletter_fab_closed';
+            var consentCookie = 'zodhya_cookie_consent';
             var hasShownPopup = false;
+            var observer = null;
+            var productsSection = null;
+
+            // Function to check if cookie consent has been given
+            function hasCookieConsent() {
+                try {
+                    // Use the same cookie reading method as cookie consent code
+                    var match = document.cookie.match(new RegExp('(?:^|; )'+consentCookie.replace(/([.$?*|{}()\[\]\\/+^])/g,'\\$1')+'=([^;]*)'));
+                    var consent = match ? decodeURIComponent(match[1]) : null;
+                    return consent !== null && consent !== '';
+                } catch (e) {
+                    return false;
+                }
+            }
 
             // Function to show popup if conditions are met
             function showPopupIfAllowed() {
                 if (hasShownPopup) return;
+                
+                // Check if cookie consent has been given first
+                if (!hasCookieConsent()) {
+                    return; // Don't show popup until consent is given
+                }
                 
                 try {
                     // Check if user is already subscribed
@@ -1103,25 +1125,74 @@
                 }
             }
 
-            // Use Intersection Observer to detect when products section comes into view
-            if ('IntersectionObserver' in window) {
-                var productsSection = document.querySelector('.news-section');
-                if (productsSection) {
-                    var observer = new IntersectionObserver(function(entries) {
-                        entries.forEach(function(entry) {
-                            if (entry.isIntersecting) {
-                                showPopupIfAllowed();
-                                observer.unobserve(entry.target); // Stop observing once triggered
-                            }
+            // Function to setup observer when consent is available
+            function setupObserver() {
+                if (observer) return; // Already set up
+                
+                // Use Intersection Observer to detect when products section comes into view
+                if ('IntersectionObserver' in window) {
+                    productsSection = document.querySelector('.news-section');
+                    if (productsSection) {
+                        observer = new IntersectionObserver(function(entries) {
+                            entries.forEach(function(entry) {
+                                if (entry.isIntersecting) {
+                                    showPopupIfAllowed();
+                                    observer.unobserve(entry.target); // Stop observing once triggered
+                                }
+                            });
+                        }, {
+                            threshold: 0.3 // Trigger when 30% of the section is visible
                         });
-                    }, {
-                        threshold: 0.3 // Trigger when 30% of the section is visible
-                    });
-                    observer.observe(productsSection);
+                        observer.observe(productsSection);
+                    }
+                } else {
+                    // Fallback for older browsers - show after 3 seconds
+                    setTimeout(showPopupIfAllowed, 3000);
                 }
+            }
+
+            // Listen for cookie consent event
+            window.addEventListener('cookieConsentGiven', function() {
+                setupObserver();
+                // If products section is already visible, try to show popup immediately
+                if (!productsSection) {
+                    productsSection = document.querySelector('.news-section');
+                }
+                if (productsSection) {
+                    var rect = productsSection.getBoundingClientRect();
+                    var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                    if (isVisible) {
+                        // Small delay to ensure cookie is set
+                        setTimeout(showPopupIfAllowed, 100);
+                    }
+                }
+            });
+
+            // Check if consent already exists, if so setup observer immediately
+            if (hasCookieConsent()) {
+                setupObserver();
             } else {
-                // Fallback for older browsers - show after 3 seconds
-                setTimeout(showPopupIfAllowed, 3000);
+                // Wait for consent - check periodically (fallback in case event doesn't fire)
+                var consentCheckInterval = setInterval(function() {
+                    if (hasCookieConsent()) {
+                        clearInterval(consentCheckInterval);
+                        setupObserver();
+                        // If products section is already visible, try to show popup
+                        if (!productsSection) {
+                            productsSection = document.querySelector('.news-section');
+                        }
+                        if (productsSection) {
+                            var rect = productsSection.getBoundingClientRect();
+                            var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                            if (isVisible) {
+                                showPopupIfAllowed();
+                            }
+                        }
+                    }
+                }, 500); // Check every 500ms
+                
+                // Also setup observer anyway (it will check consent before showing)
+                setupObserver();
             }
 
             if (closeBtn) {
@@ -1250,13 +1321,22 @@
                 setCookie(CONSENT_COOKIE, JSON.stringify(consentObj), COOKIE_EXPIRES_DAYS);
                 // If analytics allowed, call gtag update
                 sendGtagConsent(consentObj);
+                // Dispatch event to notify that consent has been given
+                try {
+                    window.dispatchEvent(new CustomEvent('cookieConsentGiven'));
+                } catch(e) {}
             }
 
             function showBannerIfNeeded(){
                 try{
                     var existing = readCookie(CONSENT_COOKIE);
-                    if (existing) return; // already set
                     var el = document.getElementById('cookie-consent');
+                    if (existing) {
+                        // Consent already given, ensure banner is hidden
+                        if (el) el.style.display = 'none';
+                        return; // already set
+                    }
+                    // No consent yet, show the banner
                     if (el) el.style.display = 'flex';
                 }catch(e){ console.error(e); }
             }
@@ -1312,11 +1392,16 @@
             // Initialize
             document.addEventListener('DOMContentLoaded', function(){
                 init();
-                showBannerIfNeeded();
-                // If consent already present, apply immediately (esp. analytics)
+                // Check if consent already exists and hide banner immediately
                 var existing = readCookie(CONSENT_COOKIE);
                 if (existing){
+                    var el = document.getElementById('cookie-consent');
+                    if (el) el.style.display = 'none';
+                    // Apply consent immediately (esp. analytics)
                     try{ sendGtagConsent(JSON.parse(existing)); }catch(e){}
+                } else {
+                    // No consent yet, show the banner
+                    showBannerIfNeeded();
                 }
             });
         })();
