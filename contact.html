@@ -88,6 +88,14 @@
         ::placeholder {
            font-size: 15px;
         }
+        /* Honeypot field styling - ensure it's completely hidden */
+        #website {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
     </style>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -248,6 +256,10 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 form-group">
                                     <textarea name="message" placeholder="Message..." required="" required></textarea>
+                                </div>
+                                <!-- Honeypot field - hidden from users but visible to bots -->
+                                <div class="col-lg-12 col-md-12 col-sm-12 form-group" style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;">
+                                    <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" aria-hidden="true">
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 form-group message-btn">
                                     <input class="theme-btn style-one" value="Send" type="submit">
